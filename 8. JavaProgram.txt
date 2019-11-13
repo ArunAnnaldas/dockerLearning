@@ -1,0 +1,224 @@
+AIM : Create Java Program 
+==========================
+
+Step 1 : Create a java file 
+C:\Users\janar\Desktop\DockerLearning>type nul>Test.java
+
+Step 2 : Write the following code in it: 
+
+public class Test{
+	public static void main(String[] args){
+		System.out.println("Hello World");
+	}
+}
+
+Step 3 : Compile the code
+C:\Users\janar\Desktop\DockerLearning\7. CustomImage>javac Test.java
+
+Step 4 : Run the code
+
+C:\Users\janar\Desktop\DockerLearning\7. CustomImage>java Test
+Hello World
+
+
+AIM: Run the code inside the container
+======================================
+Step 1: Run alpine in interactive mode & Check whether Java is installed??
+
+C:\Users\janar\Desktop\DockerLearning\7. CustomImage>docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+cmeatarun1988/datedisplay   latest              ee1fdd610c1b        18 minutes ago      5.55MB
+alpine                      latest              965ea09ff2eb        4 days ago          5.55MB
+busybox                     latest              19485c79a9bb        7 weeks ago         1.22MB
+
+C:\Users\janar\Desktop\DockerLearning\7. CustomImage>docker run -it alpine
+/ # java
+/bin/sh: java: not found
+
+Step 2: To install something in alpine, keyword is apk. (Similar to npm in node js)
+Run the below command. It will install jdk in alpine 
+
+/ # apk add openjdk8
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+(1/40) Installing libffi (3.2.1-r6)
+(2/40) Installing p11-kit (0.23.16.1-r0)
+(3/40) Installing libtasn1 (4.14-r0)
+(4/40) Installing p11-kit-trust (0.23.16.1-r0)
+(5/40) Installing ca-certificates (20190108-r0)
+(6/40) Installing java-cacerts (1.0-r0)
+(7/40) Installing libgcc (8.3.0-r0)
+(8/40) Installing nspr (4.20-r0)
+(9/40) Installing sqlite-libs (3.28.0-r1)
+(10/40) Installing libstdc++ (8.3.0-r0)
+(11/40) Installing nss (3.44-r0)
+(12/40) Installing libxau (1.0.9-r0)
+(13/40) Installing libbsd (0.9.1-r0)
+(14/40) Installing libxdmcp (1.1.3-r0)
+(15/40) Installing libxcb (1.13.1-r0)
+(16/40) Installing libx11 (1.6.8-r1)
+(17/40) Installing libxcomposite (0.4.5-r0)
+(18/40) Installing libxext (1.3.4-r0)
+(19/40) Installing libxi (1.7.9-r2)
+(20/40) Installing libxrender (0.9.10-r3)
+(21/40) Installing libxtst (1.2.3-r3)
+(22/40) Installing alsa-lib (1.1.9-r0)
+(23/40) Installing libbz2 (1.0.6-r7)
+(24/40) Installing libpng (1.6.37-r1)
+(25/40) Installing freetype (2.10.0-r0)
+(26/40) Installing giflib (5.1.9-r0)
+(27/40) Installing libjpeg-turbo (2.0.2-r0)
+(28/40) Installing openjdk8-jre-lib (8.222.10-r0)
+(29/40) Installing java-common (0.2-r0)
+(30/40) Installing krb5-conf (1.0-r1)
+(31/40) Installing libcom_err (1.45.2-r1)
+(32/40) Installing keyutils-libs (1.6-r1)
+(33/40) Installing libverto (0.3.1-r0)
+(34/40) Installing krb5-libs (1.17-r0)
+(35/40) Installing lcms2 (2.9-r1)
+(36/40) Installing pcsc-lite-libs (1.8.25-r1)
+(37/40) Installing liblksctp (1.0.18-r0)
+(38/40) Installing openjdk8-jre-base (8.222.10-r0)
+(39/40) Installing openjdk8-jre (8.222.10-r0)
+(40/40) Installing openjdk8 (8.222.10-r0)
+Executing busybox-1.30.1-r2.trigger
+Executing ca-certificates-20190108-r0.trigger
+Executing java-common-0.2-r0.trigger
+OK: 104 MiB in 54 packages
+
+Step 3 : This will install Java. Now, check whether java compiler is present or not?
+/ # javac
+/bin/sh: javac: not found
+
+Step 4 : check the java version. We have installed jdk. So by default compiler HAS to be isntalled. 
+We need to find the javac file and then add it to path variable. 
+
+/ # java -version
+openjdk version "1.8.0_222"
+OpenJDK Runtime Environment (IcedTea 3.13.0) (Alpine 8.222.10-r0)
+OpenJDK 64-Bit Server VM (build 25.222-b10, mixed mode)
+
+Step 5 : We need to check where the javac file is present. For that we will use "find" command. 
+/ # find / -name javac
+/usr/lib/jvm/java-1.8-openjdk/bin/javac
+
+Step 6 : We will add this javac file in the PATH Variable. In linux, ":" is used to separable different paths.
+/ # export PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin/
+
+Step 7 : Now check whether javac commands works. That works!!!!
+/ # javac
+
+Step 8 : Now open the docker file again and create the above steps in code. 
+Refer newly created DockerJavaFile.
+
+FROM alpine
+RUN apk add openjdk8
+ENV PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin
+WORKDIR /usr/share/ArunLearningDocker
+ADD Test.java Test.java
+ENTRYPOINT javac Test.java && java Test
+
+Step 9: Run the following command from where the dockerfile is present
+
+-------------------------------------------------------------------------------------------------------------------------
+C:\Users\janar\Desktop\DockerLearning\8. JavaProgram>docker build -t=cmeatarun1988/hello-world .
+
+Sending build context to Docker daemon  3.072kB
+Step 1/6 : FROM alpine
+ ---> 965ea09ff2eb
+Step 2/6 : RUN apk add openjdk8
+ ---> Running in a22e5cf9c367
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+(1/40) Installing libffi (3.2.1-r6)
+(2/40) Installing p11-kit (0.23.16.1-r0)
+(3/40) Installing libtasn1 (4.14-r0)
+(4/40) Installing p11-kit-trust (0.23.16.1-r0)
+(5/40) Installing ca-certificates (20190108-r0)
+(6/40) Installing java-cacerts (1.0-r0)
+(7/40) Installing libgcc (8.3.0-r0)
+(8/40) Installing nspr (4.20-r0)
+(9/40) Installing sqlite-libs (3.28.0-r1)
+(10/40) Installing libstdc++ (8.3.0-r0)
+(11/40) Installing nss (3.44-r0)
+(12/40) Installing libxau (1.0.9-r0)
+(13/40) Installing libbsd (0.9.1-r0)
+(14/40) Installing libxdmcp (1.1.3-r0)
+(15/40) Installing libxcb (1.13.1-r0)
+(16/40) Installing libx11 (1.6.8-r1)
+(17/40) Installing libxcomposite (0.4.5-r0)
+(18/40) Installing libxext (1.3.4-r0)
+(19/40) Installing libxi (1.7.9-r2)
+(20/40) Installing libxrender (0.9.10-r3)
+(21/40) Installing libxtst (1.2.3-r3)
+(22/40) Installing alsa-lib (1.1.9-r0)
+(23/40) Installing libbz2 (1.0.6-r7)
+(24/40) Installing libpng (1.6.37-r1)
+(25/40) Installing freetype (2.10.0-r0)
+(26/40) Installing giflib (5.1.9-r0)
+(27/40) Installing libjpeg-turbo (2.0.2-r0)
+(28/40) Installing openjdk8-jre-lib (8.222.10-r0)
+(29/40) Installing java-common (0.2-r0)
+(30/40) Installing krb5-conf (1.0-r1)
+(31/40) Installing libcom_err (1.45.2-r1)
+(32/40) Installing keyutils-libs (1.6-r1)
+(33/40) Installing libverto (0.3.1-r0)
+(34/40) Installing krb5-libs (1.17-r0)
+(35/40) Installing lcms2 (2.9-r1)
+(36/40) Installing pcsc-lite-libs (1.8.25-r1)
+(37/40) Installing liblksctp (1.0.18-r0)
+(38/40) Installing openjdk8-jre-base (8.222.10-r0)
+(39/40) Installing openjdk8-jre (8.222.10-r0)
+(40/40) Installing openjdk8 (8.222.10-r0)
+Executing busybox-1.30.1-r2.trigger
+Executing ca-certificates-20190108-r0.trigger
+Executing java-common-0.2-r0.trigger
+OK: 104 MiB in 54 packages
+Removing intermediate container a22e5cf9c367
+ ---> 8d411975b9ba
+Step 3/6 : ENV PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/bin
+ ---> Running in c2970c67846f
+Removing intermediate container c2970c67846f
+ ---> 31501105bdab
+Step 4/6 : WORKDIR /usr/share/ArunLearningDocker
+ ---> Running in 583a29bb6cb0
+Removing intermediate container 583a29bb6cb0
+ ---> 61ac49569320
+Step 5/6 : ADD Test.java Test.java
+ ---> 5af921b8c875
+Step 6/6 : ENTRYPOINT javac Test.java && java Test
+ ---> Running in cad7ef44c0da
+Removing intermediate container cad7ef44c0da
+ ---> e9e84a910861
+Successfully built e9e84a910861
+Successfully tagged cmeatarun1988/hello-world:latest
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+-------------------------------------------------------------------------------------------------------------------------
+
+Step 10 : Now check whether the image is built or not?
+
+C:\Users\janar\Desktop\DockerLearning\8. JavaProgram>docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED              SIZE
+cmeatarun1988/hello-world   latest              e9e84a910861        About a minute ago   107MB
+cmeatarun1988/datedisplay   latest              ee1fdd610c1b        About an hour ago    5.55MB
+alpine                      latest              965ea09ff2eb        4 days ago           5.55MB
+busybox                     latest              19485c79a9bb        7 weeks ago          1.22MB
+
+Step 11 : Now run the Hello-world image created. 
+
+C:\Users\janar\Desktop\DockerLearning\8. JavaProgram>docker run cmeatarun1988/hello-world
+Hello World
+
+Step 12 : Check whether the container is created or not?
+
+C:\Users\janar\Desktop\DockerLearning\8. JavaProgram>docker ps -a
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                         PORTS               NAMES
+2f8d92af252f        cmeatarun1988/hello-world   "/bin/sh -c 'javac T…"   9 seconds ago       Exited (0) 7 seconds ago                           wonderful_mendeleev
+380cc534d0e8        alpine                      "/bin/sh"                32 minutes ago      Exited (130) 6 minutes ago                         nifty_pare
+2cf898663fc1        cmeatarun1988/datedisplay   "/bin/sh -c date"        About an hour ago   Exited (0) About an hour ago                       relaxed_cartwright
+7f344f17b869        cmeatarun1988/datedisplay   "/bin/sh -c date"        About an hour ago   Exited (0) About an hour ago                       epic_fermat
+424daba998f4        cmeatarun1988/datedisplay   "/bin/sh -c date"        About an hour ago   Exited (0) About an hour ago                       wonderful_clarke
+
+Step 13 : If you want to go inside the container and see what is happening, you need to specify the entrypoint to the image which you have created. 
+
+C:\Users\janar\Desktop\DockerLearning\8. JavaProgram>docker run -it --entrypoint=/bin/sh cmeatarun1988/hello-world

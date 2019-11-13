@@ -1,0 +1,64 @@
+In this session, we will learn about how to identify the port #'s from outside the system. 
+Below is the command to identify a container within a system. 
+
+------------------------------------------------------------------------------------------------
+docker run -p hostPort:containerPort image
+------------------------------------------------------------------------------------------------
+eg: 
+docker run -p 80:80 vinsdocker/jmserver
+docker run -p 4444:80 mongo
+------------------------------------------------------------------------------------------------
+C:\Users\janar>docker run -p 8050:80 nginx
+docker: error during connect: Post http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.39/containers/create: open //./pipe/docker_engine: 
+The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. 
+This error may also indicate that the docker daemon is not running.
+See 'docker run --help'.
+------------------------------------------------------------------------------------------------
+
+If you get this error, run cmd in elevated mode. It should run fine. 
+If any other error, restart the docker service.
+
+------------------------------------------------------------------------------------------------
+C:\Users\janar>docker run -p 8050:80 nginx
+------------------------------------------------------------------------------------------------
+
+Observation: nginx is a server. Once you hit this line, the server is up.
+
+Try to hit this url in browser: 
+http://localhost:8050/
+
+Welcome to nginx screen would be displayed. 
+
+==================================================================================================================================================================================================================
+
+Now stop the docker using below command
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+C:\windows\system32>docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+89f34da60621        nginx               "nginx -g 'daemon of…"   4 minutes ago       Up 4 minutes        0.0.0.0:8050->80/tcp   hopeful_hopper
+
+C:\windows\system32>docker stop hopeful_hopper
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Change the port # and hit this in cmd
+
+C:\Users\janar>docker run -p 8033:80 nginx
+
+Try to hit this url in browser: 
+http://localhost:8033/
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+If you want to run the server in background mode, you can use the -d  option. 
+By doing this, you can use the terminal for something else after putting the server ON.
+
+C:\windows\system32>docker run -d -p 8050:80 nginx
+5c9c5d54563d995482ed93e527c11f4ab54843d0b91c1d5de9ad72799b04c539
+
+C:\windows\system32>docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+5c9c5d54563d        nginx               "nginx -g 'daemon of…"   7 seconds ago       Up 5 seconds        0.0.0.0:8050->80/tcp   blissful_rubin
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------

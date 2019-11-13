@@ -1,0 +1,90 @@
+Creating network between 2 containers within the same host
+==========================================================
+
+docker network create anyName
+docker run --network=anyName nginx
+docker run --network=anyName alpine
+
+
+If you want to connect nginx server with alpine
+
+
+Q) What is alpine? <Source : hub.docker.com>
+A minimal Docker image based on Alpine Linux with a complete package index and only 5 MB in size!
+
+Q) What is Nginx?
+Nginx is a web server which can also be used as a reverse proxy, load balancer, mail proxy and HTTP cache.
+nginx is a host name like yahoo.com or google.com. 
+
+
+THe below eg demonstrates that you are able to ping nginx web server from alpine (It is a Linux distribution... kind of OS)
+===========================================================================================================================
+
+C:\windows\system32>docker network create arunDockerNetwork
+e6c46d3b68819329afec41abd8b739eebe72bb560a991d75c81f4c8aa6e2ac94
+
+C:\windows\system32>docker run -d --name=ArunNginx --network=arunDockerNetwork nginx
+acbe5c88e1f4613684ca9f66426ddc9487fbf72f6e6bc931493bc09c4334d8b0
+
+C:\windows\system32>docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+acbe5c88e1f4        nginx               "nginx -g 'daemon of…"   4 seconds ago       Up 3 seconds        80/tcp              ArunNginx
+
+C:\windows\system32>docker run -it --network=arunDockerNetwork alpine
+/ # ping ArunNginx
+PING ArunNginx (172.20.0.2): 56 data bytes
+64 bytes from 172.20.0.2: seq=0 ttl=64 time=0.067 ms
+64 bytes from 172.20.0.2: seq=1 ttl=64 time=0.067 ms
+64 bytes from 172.20.0.2: seq=2 ttl=64 time=0.067 ms
+64 bytes from 172.20.0.2: seq=3 ttl=64 time=0.068 ms
+
+The below example will try to fetch files from web server from inside alpine distribution
+=========================================================================================
+
+Normally we open a browser and say localhost in URL. Here there is no need because, Alpine is my OS and I am inside the OS using the terminal.
+So no need of using localhost. When you hit below command, index.html file is downloaded. 
+
+/ # wget ArunNginx
+Connecting to ArunNginx (172.20.0.2:80)
+index.html           100% |************************************|   612  0:00:00 ETA
+/ # ls
+bin         home        media       proc        sbin        tmp
+dev         index.html  mnt         root        srv         usr
+etc         lib         opt         run         sys         var
+/ # less index.html
+
+
+			BusyBox v1.30.1 (2019-06-12 17:51:55 UTC) multi-call binary.
+
+			<!DOCTYPE html>
+			<html>
+			<head>
+			<title>Welcome to nginx!</title>
+			<style>
+			    body {
+			<!DOCTYPE html>
+			<html>
+			<head>
+			<title>Welcome to nginx!</title>
+			<style>
+			    body {
+			        width: 35em;
+			        margin: 0 auto;
+			        font-family: Tahoma, Verdana, Arial, sans-serif;
+			    }
+			</style>
+			</head>
+			<body>
+			<h1>Welcome to nginx!</h1>
+			<p>If you see this page, the nginx web server is successfully installed and
+			working. Further configuration is required.</p>
+	
+			<p>For online documentation and support please refer to
+			<a href="http://nginx.org/">nginx.org</a>.<br/>
+			Commercial support is available at
+			<a href="http://nginx.com/">nginx.com</a>.</p>
+
+			<p><em>Thank you for using nginx.</em></p>
+			</body>
+			</html>
+

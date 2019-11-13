@@ -1,0 +1,43 @@
+
+==========================================================
+SCALING in CONTAINERS
+==========================================================
+
+docker-compose ps
+==> This gives the list of containers under docker-compose
+
+docker-compose up -d
+==> This command will not create new container but it will go and check what is the current state.
+
+docker-compose up -d --scale chrome=4
+==> This command will create 4 containers for chrome to support parallel threading mechanism.
+
+C:\Users\janar\Desktop\DockerLearning\13. Run Automation Framework in Docker Selenium Grid>docker-compose up -d --scale chrome=4
+13runautomationframeworkindockerseleniumgrid_hub_1 is up-to-date
+13runautomationframeworkindockerseleniumgrid_firefox_1 is up-to-date
+Starting 13runautomationframeworkindockerseleniumgrid_chrome_1 ... done
+Creating 13runautomationframeworkindockerseleniumgrid_chrome_2 ... done
+Creating 13runautomationframeworkindockerseleniumgrid_chrome_3 ... done
+Creating 13runautomationframeworkindockerseleniumgrid_chrome_4 ... done
+
+
+You can add multiple instances with the below command. 
+docker-compose up -d --scale chrome=4 --scale firefox=4
+
+
+=======
+Issue
+=======
+If you scale up and go to browser, number of instances increases in browser
+HOwever, if you scale down, the browser refresh seems to hang. 
+
+Reason: When you scale down, the node instance is deleted by the reference is not.
+Node does not update hub about scaling down. 
+
+Resolution: You need to wait for sometime for the hub to realize that the node is removed.
+This process is automatic and needs no manual intervention. 
+
+--------------------------------------------------------------------------------
+
+
+------

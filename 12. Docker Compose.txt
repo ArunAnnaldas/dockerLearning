@@ -1,0 +1,66 @@
+It is a yaml file with key value pair similar to json. 
+
+Run Parameters: 
+===============
+-d
+-i
+-t
+-v
+-p
+-e
+--name
+--entrypoint
+--imageName
+
+Specifying all the run parameters everytime in command prompt is difficult. 
+Hence, we create a yaml file and configure it once and for all with configurable parameters. 
+
+You can specify configuration for multiple containers. 
+Below mentioned file contains configuration for only squares container. 
+Mandatory Fields : 
+Container Name (squares)
+image:cmeatarun1988/findingsquares
+
+Sample yaml file mentioned below
+================================
+
+------------------------------------------------------------------------------------
+version:"3"
+services:
+	squares:
+		image:cmeatarun1988/findingsquares
+		container_name: optionalName
+		ports:
+			"3000:8050"
+		environment:
+			- NUMBER=5
+			- URL=https://www.google.com
+		volumes:
+			- C:\Users\janar\Desktop\DockerLearning:/create/this/newPath
+		entrypoint: "javac Test.java"
+------------------------------------------------------------------------------------
+
+Assume you need to have one more container which depends on squares container. 
+eg: if your db is running, only then launch the container for the application. 
+
+------------------------------------------------------------------------------------
+version:"3"
+services:
+	squares:
+		image:cmeatarun1988/findingsquares
+		container_name: optionalName
+		ports:
+			"3000:8050"
+		environment:
+			- NUMBER=5
+			- URL=https://www.google.com
+		volumes:
+			- C:\Users\janar\Desktop\DockerLearning:/create/this/newPath
+		entrypoint: "javac Test.java"
+	nginx:
+		image:nginx
+		ports:
+			- "80:80"
+		depends on:
+			- "squares"
+------------------------------------------------------------------------------------

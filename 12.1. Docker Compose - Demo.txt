@@ -1,0 +1,31 @@
+Step 1: 
+=======
+
+Open cmd prompt and type "docker-compose". 
+
+What is docker-compose??? <<Source : https://docs.docker.com/compose/>>
+Compose is a tool for defining and running multi-container Docker applications. 
+With Compose, you use a YAML file to configure your application’s services. 
+Then, with a single command, you create and start all the services from your configuration
+
+
+Step 2: 
+=======
+
+C:\Users\janar>docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+cmeatarun1988/findingsquares   latest              d8cc38b4255c        6 days ago          107MB
+cmeatarun1988/findingsquares   release-1.00        d8cc38b4255c        6 days ago          107MB
+nginx                          latest              540a289bab6c        12 days ago         126MB
+alpine                         latest              965ea09ff2eb        13 days ago         5.55MB
+docker4w/nsenter-dockerd       latest              2f1c802f322f        12 months ago       187kB
+
+Step 3: Navigate to the folder where yml file is present. 
+=======
+
+C:\Users\janar\Desktop\DockerLearning\12. Docker Compose>docker-compose up
+Starting squareFinder ... done
+Attaching to squareFinder
+squareFinder | The argument received is 5
+squareFinder | Square of the number received is 25
+squareFinder exited with code 0

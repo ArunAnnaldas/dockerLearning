@@ -1,0 +1,53 @@
+Step 1 : Login to docker using cmd
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: cmeatarun1988
+Password:
+Login Succeeded
+
+Step 2 : Issue the command to push the images to your docker hub.
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker push cmeatarun1988/findingsquares                                                                     The push refers to repository [docker.io/cmeatarun1988/findingsquares]
+1e7bde7155c1: Pushed
+0c1454e2b14f: Pushed
+800984dc880d: Pushed
+77cae8ab23bf: Mounted from library/alpine
+latest: digest: sha256:70dd847a50f2f39d6105305e33a62f0c7d1acd3fb19cb842850df06b4ee8042b size: 1154
+
+Step 3 : Navigate to the below url and check whether the image is present or not?
+https://cloud.docker.com/u/cmeatarun1988/repository/list
+
+Step 4 : If you want to add a version/tag to the pushed image, use the following command. 
+docker tag imageName:oldTag imageName:newTag
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+cmeatarun1988/findingsquares   latest              d8cc38b4255c        About an hour ago   107MB
+nginx                          latest              540a289bab6c        5 days ago          126MB
+alpine                         latest              965ea09ff2eb        6 days ago          5.55MB
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker tag cmeatarun1988/findingsquares:latest cmeatarun1988/findingsquares:release-1.00
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+cmeatarun1988/findingsquares   latest              d8cc38b4255c        About an hour ago   107MB
+cmeatarun1988/findingsquares   release-1.00        d8cc38b4255c        About an hour ago   107MB
+nginx                          latest              540a289bab6c        5 days ago          126MB
+alpine                         latest              965ea09ff2eb        6 days ago          5.55MB
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker push cmeatarun1988/findingsquares
+The push refers to repository [docker.io/cmeatarun1988/findingsquares]
+1e7bde7155c1: Layer already exists
+0c1454e2b14f: Layer already exists
+800984dc880d: Layer already exists
+77cae8ab23bf: Layer already exists
+latest: digest: sha256:70dd847a50f2f39d6105305e33a62f0c7d1acd3fb19cb842850df06b4ee8042b size: 1154
+1e7bde7155c1: Layer already exists
+0c1454e2b14f: Layer already exists
+800984dc880d: Layer already exists
+77cae8ab23bf: Layer already exists
+release-1.00: digest: sha256:70dd847a50f2f39d6105305e33a62f0c7d1acd3fb19cb842850df06b4ee8042b size: 1154
+
+Step 5 : Refresh the docker hub website. You will be able to see the newly added tags.
+https://cloud.docker.com/repository/docker/cmeatarun1988/findingsquares

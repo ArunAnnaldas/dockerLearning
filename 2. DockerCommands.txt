@@ -1,0 +1,23 @@
+docker pull image 		: Pulls an image from DockerHub. To be used when you want to get latest changes in image.
+docker run image 		: Runs an image already pulled from DockerHub. 
+docker images 			: shows all the images in our machine
+docker ps 			: shows all the running containers
+docker ps -a			: shows all the containers including stopped containers
+docker run image		: creates a container from an image
+docker stop containerid/name	: stops a running container
+docker system prune -f		: To remove all the stopped containers (docker do not touch the running containers)
+docker system prune -a		: To remove all the stopped containers (docker do not touch the running containers) + unused images
+
+==========================================================
+		Image Name Format
+==========================================================
+
+docker run 			hello-world
+[repository-host:port]/[owner]/ imageName	[:tag]
+
+Default values: 
+a. [repository-host:port] 	=> hub.docker.com
+b. [owner] 			=> library (docker official)
+c. [tag]			=> latest
+
+==========================================================

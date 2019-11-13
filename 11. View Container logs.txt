@@ -1,0 +1,17 @@
+If the container is exited but you want to retrieve the logs when it was executed. 
+Then issue the following command. 
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker ps -a
+CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS                         PORTS               NAMES
+286b15346108        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (0) About an hour ago                       optimistic_swirles
+844cc66d3d33        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       festive_leakey
+05d1e3d3c79b        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       vibrant_buck
+e33929c7fe2b        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       happy_brahmagupta
+7076d8d6ea3e        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (0) About an hour ago                       sad_ride
+7347982158e5        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       inspiring_lovelace
+cd5d6d485091        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       nervous_swanson      44f631fe9eb4        cmeatarun1988/findingsquares   "/bin/sh -c 'javac T…"   About an hour ago   Exited (1) About an hour ago                       jovial_joliot
+16e5a5e8f090        nginx                          "nginx -g 'daemon of…"   3 hours ago         Up 3 hours                     80/tcp              nginx
+
+C:\Users\janar\Desktop\DockerLearning\9. Passing variables>docker logs optimistic_swirles
+The argument received is 5
+Square of the number received is 25

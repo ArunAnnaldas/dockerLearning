@@ -1,0 +1,76 @@
+To Install docker
+=================
+a. Simply type install docker for windows in google
+b. download the installer
+c. follow the steps and reboot the system.
+
+Arun's System Configuration 
+===========================
+OS Name : Microsoft Windows 10 Pro
+Version : 10.0.16299 Build 16299
+Processor : i7-8550U CPU
+RAM : 8GB
+
+
+After installing docker run the following commands to test
+===========================================================
+
+docker
+docker version   ==> If the server info is not available, please restart docker service
+docker run hello-world  ==> If message is available from docker, then installation is fine
+docker-compose
+docker-compose version
+docker system prun -af ==> Delete containers and images
+
+If docker is not working... 
+Client and server are isntalled
+client contacts servers for informtion. if server is not up. 
+
+==========================================================================
+Terminologies & its analogous w.r.t Java language (just for understanding)
+==========================================================================
+a. DockerFile : 
+   - Has instructions for docker to read the file and create Virtual m/c as per the instructions given in file. 
+   - Has No Extension.
+   - Similar to .java file
+
+b. Build : 
+   - Create image snapshot from docker file
+   - Similar to compile step in java process
+
+c. Image : 
+   - VM Snapshot
+   - Similar to .class/.jar file
+
+d. Tag : 
+   - Version of an image/release
+   - Similar to jar version
+
+e. Container : 
+   - Light Weight Virtual Machine
+   - Created from a specific image version
+   - Can create multiple container from same Image
+   - Similar to instances/Objects in Java
+
+f. DockerHub : 
+   - Image repository
+   - Similar to Maven repo
+
+========================================================================================================================	
+					Process
+========================================================================================================================
+		Build		push		 pull		run 		App1
+DockerFile   	=====>  Image	====> DockerHub	 ===>  Image  	===>		App2
+										App3
+========================================================================================================================
+
+				What is Docker Compose???
+
+a. In a java code, we do not dump all the code in just 1 file. 
+   Test class... page objects.. utility... all these classes talk to each other in an Automation/java framework. 
+b. Similarly, we do not create an image with everything installed as part of Docker Image.
+c. We will create an image of our Test scripts and reuse other images already present in docker hub (eg: Firefox, Chrome)
+d. For the E2E flow to work, we will have to create containers from each of the images and connect in a way where it will start working. 
+e. All these instructions are mentioend in docker-compose.yaml file. 
+
+=========================================================================================================================

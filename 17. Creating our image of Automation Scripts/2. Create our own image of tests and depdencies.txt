@@ -1,0 +1,68 @@
+==============================================================
+AIM : To create our own image
+==============================================================
+
+High Level overview of docker yaml file
+---------------------------------------
+
+From anyOS
+JRE
+ADD class files
+ADD suite
+ENTRYPOINT run the jar file
+
+Note:
+====
+Since we have created a jar file, we do not need jdk. 
+We would take an image of jre and use it. 
+This will ensure that the image file size is less. 
+We will pick : 8u191-jre-alpine3.8
+
+Reference Link for finding jre version
+======================================
+https://github.com/Kong/docker-official-docs/tree/master/openjdk
+
+Step 1 : Place the dockerfile in the automation framework root location.
+
+Step 2 : Run this command. Image should get created. 
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker build -t=cmeatarun1988/selenium-docker .
+
+Possible failures :
+1) Indentation in dockerfile
+
+Step 3 : Run the command
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker images
+
+Step 4 : Now, we will interact with the image through Shell... by specifying our own entrypoint. 
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker run -it --entrypoint=/bin/sh cmeatarun1988/selenium-docker
+
+Step 5 : By above line, we will not be able to view the files in target section as the files will be deleted once the container is deleted. 
+Hence, we need to do volume mapping. 
+
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker run -it --entrypoint=/bin/sh -v C:\Users\janar\eclipse-workspace\Selenium-Docker/output:/usr/share/workspace/test-output cmeatarun1988/selenium-docker
+
+Step 6: Run the below command to compile and execute. This step will create logs in our local host machine because of volume mapping. 
+/usr/share/workspace # java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/*
+org.testng.TestNG search-module.xml
+
+Step 7 : there is a failure, because selenium-docker was running inside the container where hub is not accessible. 
+we need to specify the ip address of the machine where hub is running to selenium-docker container
+
+Step 8 : This step will run the Automation scripts from a jar inside the container which you created. 
+This will ensure that our setup is working fine INSIDE container. 
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker run -it --entrypoint=/bin/sh cmeatarun1988/selenium-docker
+
+/usr/share/workspace # java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* -DHUB_HOST=172.20.10.5 org.testng.TestNG search-module.xml
+
+Step 9 : Next step is to run the image from our host machine (laptop). 
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker run -e HUB_HOST=172.20.10.5 -e BROWSER=chrome -e MODULE=search-module.xml cmeatarun1988/selenium-docker
+
+Step 10 : We can do volume mapping as well just to ensure that we have all the reports in our local machine after execution is completed from container. 
+==> -d runs the container in background mode
+
+C:\Users\janar\eclipse-workspace\Selenium-Docker>docker run -e HUB_HOST=172.20.10.5 -e BROWSER=chrome -e MODULE=search-module.xml -v C:\Users\janar\eclipse-workspace\Selenium-Docker/output:/usr/share/workspace/test-output cmeatarun1988/selenium-docker
+
+Step 11 : To check what is happening, run the below commands. 
+docker ps -a
+docker logs containerNameFromAboveCommand
+

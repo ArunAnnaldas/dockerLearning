@@ -1,0 +1,44 @@
+If you want to map file/folder directory from host to container, you use the concept of volume mapping.
+
+docker run -v /path/to/host/dir:/path/to/container/dir imageName
+
+=======================
+DEMO in WINDOWS Machine
+=======================
+Pre-req: 
+--------
+a. Place all the notepad files related to docker in this path. 
+	C:\Users\YourUserName\Desktop\DockerLearning
+
+Below is the execution of the above command. 
+It creates copy of all notepads in my newly created Ubuntu container
+
+
+C:\windows\system32>docker run -it -v C:\Users\janar\Desktop\DockerLearning:/create/this/newPath ubuntu
+root@1d4a26a2c1f1:/# ls -al
+total 76
+
+drwxr-xr-x   2 root root 4096 Apr 24  2018 boot
+drwxr-xr-x   3 root root 4096 Oct 23 03:24 create
+drwxr-xr-x   5 root root  360 Oct 23 03:24 dev
+
+root@1d4a26a2c1f1:/# cd create
+
+root@1d4a26a2c1f1:/create# ls -al
+drwxr-xr-x 1 root root 4096 Oct 23 03:24 ..
+drwxr-xr-x 3 root root 4096 Oct 23 03:24 this
+
+root@1d4a26a2c1f1:/create# cd this
+
+root@1d4a26a2c1f1:/create/this# cd newPath/
+
+root@1d4a26a2c1f1:/create/this/newPath# ls -al
+total 25
+drwxrwxrwx 2 root root 4096 Oct 23 03:01  .
+drwxr-xr-x 3 root root 4096 Oct 23 03:24  ..
+-rwxr-xr-x 1 root root 3064 Oct 22 04:34 '1. DockerIntro.txt'
+-rwxr-xr-x 1 root root 1117 Oct 22 04:20 '2. DockerCommands.txt'
+-rwxr-xr-x 1 root root 4330 Oct 22 05:21 '3. Creating a Container.txt'
+-rwxr-xr-x 1 root root 3637 Oct 23 02:59 '4. Port Mapping.txt'
+-rwxr-xr-x 1 root root  421 Oct 23 03:18 '5. Volume Mapping.txt'
+root@1d4a26a2c1f1:/create/this/newPath#

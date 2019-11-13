@@ -1,0 +1,18 @@
+version: "3"
+services:
+  nginx:
+    image: nginx
+    container_name: nginxContainer
+  alpine1:
+    image: alpine
+    entrypoint: "ping nginx"
+    depends_on:
+      - nginx
+  alpine2:
+    image: alpine
+    working_dir: /copy/from/here
+    entrypoint: "wget nginx"
+    volumes:
+      - C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration:/copy/from/here
+    depends_on:
+      - nginx

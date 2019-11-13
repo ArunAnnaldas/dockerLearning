@@ -1,0 +1,122 @@
+By default docker-compose creates its own network. 
+
+We need not explicitly create a network. 
+Docker-compose creates network automatically and places all the containers in the same network. 
+
+In this eg, we are using nginx and alpine
+
+Default entrypoint for nginx is /ssh/bin. Hence, entrypoint has to be overridden. 
+Since, alpine container needs nginx to be up and running, we need to use "depends on"
+
+
+Sample yaml file with comments
+==============================
+
+version: "3"
+services:
+  nginx:
+    image: nginx  ---> Image name is used to pull the image if it is not present in local
+    container_name: nginxContainer
+  alpine:
+    image: alpine
+    entrypoint: "ping nginx"   ---> 1 to 1 mapping 
+    depends on:                ---> if you want to pass a list, docker-compose supports a feature with a "-" sign. 
+      - nginx
+      - ubuntu
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Navigate to directory where docker-compose yaml file is present and run command "docker-compose up"
+
+
+C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration>docker-compose up
+Creating nginxContainer ... done
+Creating 122dockercompose-multiplecontainersconfiguration_alpine_1 ... done
+Attaching to nginxContainer, 122dockercompose-multiplecontainersconfiguration_alpine_1
+alpine_1  | PING nginx (172.19.0.2): 56 data bytes
+alpine_1  | 64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.064 ms
+alpine_1  | 64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.076 ms
+alpine_1  | 64 bytes from 172.19.0.2: seq=2 ttl=64 time=0.072 ms
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+if you want to see only docker-compose containers, you can do it as metnioned below.
+
+
+C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration>docker-compose ps
+The system cannot find the path specified.
+                          Name                                    Command           State     Ports
+122dockercompose-multiplecontainersconfiguration_alpine_1   ping nginx             Exit 137
+nginxContainer                                              nginx -g daemon off;   Up         80/tcp
+
+
+================================================================================================================================================
+
+Now just for eg, we can create multiple containers for alpine and change working directory, create volumne mapping, verify the file copied from the 
+newly created container to your host (physical) machine
+
+
+Sample docker-compose.yaml file
+===============================
+
+version: "3"
+services:
+  nginx:
+    image: nginx
+    container_name: nginxContainer
+  alpine1:
+    image: alpine
+    entrypoint: "ping nginx"
+    depends_on:
+      - nginx
+  alpine2:
+    image: alpine
+    working_dir: /copy/from/here
+    entrypoint: "wget nginx"
+    volumes:
+      - C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration:/copy/from/here
+    depends_on:
+      - nginx
+
+
+
+
+Step 1: Check the files you have in your working directory
+======
+
+C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration>dir
+ Volume in drive C is Windows
+ Volume Serial Number is 5604-C57D
+
+ Directory of C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration
+
+05-11-2019  09:33    <DIR>          .
+05-11-2019  09:33    <DIR>          ..
+05-11-2019  09:37               440 docker-compose.yaml
+05-11-2019  09:25               179 docker-compose_0.yaml
+               2 File(s)            619 bytes
+               2 Dir(s)  133,381,804,032 bytes free
+
+
+Step 2: Run "docker-compose up" command after navigating to the 
+=======
+
+C:\Users\janar\Desktop\DockerLearning\12.2. Docker Compose - Multiple Containers Configuration>docker-compose up
+nginxContainer is up-to-date
+Creating 122dockercompose-multiplecontainersconfiguration_alpine1_1 ... done
+Creating 122dockercompose-multiplecontainersconfiguration_alpine2_1 ... done
+Attaching to nginxContainer, 122dockercompose-multiplecontainersconfiguration_alpine1_1, 122dockercompose-multiplecontainersconfiguration_alpine2_1
+alpine1_1  | PING nginx (172.19.0.2): 56 data bytes
+alpine1_1  | 64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.077 ms
+alpine2_1  | Connecting to nginx (172.19.0.2:80)
+alpine2_1  | index.html           100% |********************************|   612  0:00:00 ETA
+nginxContainer | 172.19.0.4 - - [05/Nov/2019:04:08:53 +0000] "GET / HTTP/1.1" 200 612 "-" "Wget" "-"
+122dockercompose-multiplecontainersconfiguration_alpine2_1 exited with code 0
+alpine1_1  | 64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.198 ms
+alpine1_1  | 64 bytes from 172.19.0.2: seq=2 ttl=64 time=0.205 ms
+alpine1_1  | 64 bytes from 172.19.0.2: seq=3 ttl=64 time=0.092 ms
+alpine1_1  | 64 bytes from 172.19.0.2: seq=4 ttl=64 time=0.199 ms
+alpine1_1  | 64 bytes from 172.19.0.2: seq=5 ttl=64 time=0.198 ms
+alpine1_1  | 64 bytes from 172.19.0.2: seq=6 ttl=64 time=0.197 ms
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping 122dockercompose-multiplecontainersconfiguration_alpine1_1 ... done
+Stopping nginxContainer                                             ... done

@@ -1,0 +1,76 @@
+docker run imageName
+
+Options
+-d			: to run the container in the background
+-i 			: to attach the standard input to the container
+-t			: to attach the standard output to the container
+--name	somename	: To assign given naem to our container
+--entrypoint=/bin/bash	: It is a command to be executed once a container is created.
+			  An image might have an entrypoint already
+			  This option overrides the container's entrypoint. 
+
+Example Command
+===============
+
+docker run -d imageName
+docker run -it imageName
+
+docker run -it --entrypoint=/bin/bash imageName
+
+========================================================================================
+You can create Ubuntu instance on the fly within minutes ==> Power of Docker
+
+docker run ubuntu
+=> nothing happens bcoz ubuntu starts and stops immediately.
+
+docker run -t ubuntu
+=> interactive UI but it will just attach the standard output and will not consider the user input. 
+
+To operate in Ubuntu, issue the following command. 
+docker run -it ubuntu
+
+Docker run command creates a new container everytime. 
+
+========================================================================================
+Stopping a container
+========================================================================================
+Docker creates a new container everytime when a user issues a "run"command. 
+There would be a unique name assigned to the new container created. 
+
+For Eg: 
+C:\Users\janar>docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+7d3440bbddca        ubuntu              "/bin/bash"         2 minutes ago       Exited (127) 4 seconds ago                       clever_snyder
+91a1dfbf5998        ubuntu              "/bin/bash"         3 minutes ago       Exited (127) 2 minutes ago                       clever_driscoll
+b232853eafcf        ubuntu              "/bin/bash"         3 minutes ago       Exited (127) 3 minutes ago                       eloquent_neumann
+22c3fee8ba8b        ubuntu              "/bin/bash"         4 minutes ago       Up 4 minutes                                     mystifying_greider
+234f40d92d3e        ubuntu              "/bin/bash"         5 minutes ago       Exited (130) 4 minutes ago                       eloquent_kowalevski
+
+We can stop the container by issuing the following command. 
+
+C:\Users\janar>docker stop mystifying_greider
+
+C:\Users\janar>docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+7d3440bbddca        ubuntu              "/bin/bash"         6 minutes ago       Exited (127) 3 minutes ago                       clever_snyder
+91a1dfbf5998        ubuntu              "/bin/bash"         7 minutes ago       Exited (127) 6 minutes ago                       clever_driscoll
+b232853eafcf        ubuntu              "/bin/bash"         7 minutes ago       Exited (127) 7 minutes ago                       eloquent_neumann
+22c3fee8ba8b        ubuntu              "/bin/bash"         8 minutes ago       Exited (0) 2 minutes ago                         mystifying_greider
+234f40d92d3e        ubuntu              "/bin/bash"         9 minutes ago       Exited (130) 8 minutes ago                       eloquent_kowalevski
+
+======================================================================================================
+
+You can assign your own name to the container by using the "--name"command. 
+
+C:\Users\janar>docker run --name ArunContainer ubuntu
+
+C:\Users\janar>docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+f48d84f25b08        ubuntu              "/bin/bash"         10 seconds ago      Exited (0) 8 seconds ago                         ArunContainer
+7d3440bbddca        ubuntu              "/bin/bash"         7 minutes ago       Exited (127) 5 minutes ago                       clever_snyder
+91a1dfbf5998        ubuntu              "/bin/bash"         8 minutes ago       Exited (127) 7 minutes ago                       clever_driscoll
+
+======================================================================================================
+

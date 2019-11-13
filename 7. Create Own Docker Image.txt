@@ -1,0 +1,72 @@
+General Template
+================
+
+FROM image				# Base Image. Always First Line in Docker File
+ADD /my/Test.java /a/b/c/Test.java	# Adds files from your host into your host
+RUN apt-get install java		# Runs any given command
+ENV JAVA_HOME=/some/path		# Sets an env variable in the image
+WORKDIR /a/b/c				# Sets a default working directory. If we ignore / is the working directory
+EXPOSE	8050				# exposes a port for your application
+ENTRYPOINT sleep 5			# Command to be executed once a container is created from this image
+
+Hands On
+========
+
+Aim: Create a docker image which will show the date
+===================================================
+
+Pre-req: 
+-------
+a. Create a login id in hub.docker.com
+b. alphine and busybox images should be downloaded
+docker pull alpine
+docker pull busybox  (Similar to ubuntu but only 1.2MB in size)
+
+Step 1: Open Command Prompt and create a file name Dockerfile with no extn.
+C:\Users\janar\Desktop\DockerLearning>type nul>Dockerfile
+
+Step 2: Open the file and type the following command. 
+FROM alpine
+ENTRYPOINT date
+
+Step 3: Save the file and run the following command. 
+Note: cmeatarun1988 is Arun's hub.docker.com userID. 
+There is a dot at the end of the command. It tell you to create the image in the current working directory.
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker build -t=cmeatarun1988/datedisplay .
+Sending build context to Docker daemon  2.048kB
+Step 1/2 : FROM alpine
+ ---> 965ea09ff2eb
+Step 2/2 : ENTRYPOINT date
+ ---> Running in ab1d3d28f75c
+Removing intermediate container ab1d3d28f75c
+ ---> ee1fdd610c1b
+Successfully built ee1fdd610c1b
+Successfully tagged cmeatarun1988/datedisplay:latest
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+
+
+Step 4: To check whether image is created or not?
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+cmeatarun1988/datedisplay   latest              ee1fdd610c1b        3 minutes ago       5.55MB
+alpine                      latest              965ea09ff2eb        4 days ago          5.55MB
+busybox                     latest              19485c79a9bb        7 weeks ago         1.22MB
+
+Step 5: Run the custom image multiple times and check how many containers are created. 
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker run cmeatarun1988/datedisplay
+Sat Oct 26 08:36:43 UTC 2019
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker run cmeatarun1988/datedisplay
+Sat Oct 26 08:37:31 UTC 2019
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker run cmeatarun1988/datedisplay
+Sat Oct 26 08:37:33 UTC 2019
+
+C:\Users\janar\Desktop\DockerLearning\CustomImage>docker ps -a
+CONTAINER ID        IMAGE                       COMMAND             CREATED             STATUS                      PORTS               NAMES
+2cf898663fc1        cmeatarun1988/datedisplay   "/bin/sh -c date"   6 seconds ago       Exited (0) 4 seconds ago                        relaxed_cartwright
+7f344f17b869        cmeatarun1988/datedisplay   "/bin/sh -c date"   8 seconds ago       Exited (0) 6 seconds ago                        epic_fermat
+424daba998f4        cmeatarun1988/datedisplay   "/bin/sh -c date"   56 seconds ago      Exited (0) 54 seconds ago                       wonderful_clarke

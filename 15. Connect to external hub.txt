@@ -1,0 +1,23 @@
+Till now, we had everything in 1 machine. 
+If you want to connect another machine to your hub, in that case, you can connect to hub by the below mentioned command. 
+-------------------------------------------
+java -jar selenium-server-standalone-3.3.1.jar -role node - hub http://10.0.1.2:4444\grid\register
+
+
+==> Hub is another machine. In this scenario, we need to change yaml file. 
+==> Specify the IP address of the machine in HUB_HOST. 
+
+version: "3"
+services:
+  chrome:
+    image: selenium/node-chrome:3.14
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=10.0.1.2
+  firefox:
+    image: selenium/node-firefox:3.14
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=10.0.1.2
