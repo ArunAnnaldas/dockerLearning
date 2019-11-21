@@ -1,0 +1,7 @@
+=============================================
+Aim : To Implement using Existing GRID
+=============================================
+
+We just have to make changes in the docker-compose file
+
+We have to remove the hub & node services and add the IP address of host

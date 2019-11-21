@@ -1,0 +1,10 @@
+version: "3"
+services:
+  search-module:
+    image: cmeatarun1988/selenium-docker
+    environment:
+      - BROWSER=chrome
+      - HUB_HOST=172.20.10.5
+      - MODULE=search-module.xml
+    volumes:
+      - ./search-result:/usr/share/workspace/test-output
