@@ -1,0 +1,168 @@
+Started by user admin
+Obtained Jenkinsfile from git https://github.com/ArunAnnaldas/AutomationTestRunner.git
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on FleetCloud i-0edc31cf74e296bdc in /home/ec2-user/workspace/Selenium_Test_Runner_Docker
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+No credentials specified
+Fetching changes from the remote Git repository
+ > git rev-parse --is-inside-work-tree # timeout=10
+ > git config remote.origin.url https://github.com/ArunAnnaldas/AutomationTestRunner.git # timeout=10
+Cleaning workspace
+ > git rev-parse --verify HEAD # timeout=10
+Resetting working tree
+ > git reset --hard # timeout=10
+ > git clean -fdx # timeout=10
+Fetching upstream changes from https://github.com/ArunAnnaldas/AutomationTestRunner.git
+ > git --version # timeout=10
+ > git fetch --tags --progress -- https://github.com/ArunAnnaldas/AutomationTestRunner.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision e04004310ebaf1e9bebd00a64fb09c117f8da0b4 (refs/remotes/origin/master)
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e04004310ebaf1e9bebd00a64fb09c117f8da0b4 # timeout=10
+Commit message: "committing the jenkins file"
+ > git rev-list --no-walk e04004310ebaf1e9bebd00a64fb09c117f8da0b4 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Pull Latest Image)
+[Pipeline] sh
++ docker pull cmeatarun1988/selenium-docker
+Using default tag: latest
+latest: Pulling from cmeatarun1988/selenium-docker
+Digest: sha256:cafd608c31f55fbffd2975afa62d9c2b8938db80358860a6445e81c658f4a8de
+Status: Image is up to date for cmeatarun1988/selenium-docker:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Start Grid)
+[Pipeline] sh
++ docker-compose up -d hub chrome firefox
+Creating network "selenium_test_runner_docker_default" with the default driver
+Creating selenium_test_runner_docker_hub_1 ... 
+[1A[2K
+Creating selenium_test_runner_docker_hub_1 ... [32mdone[0m
+[1BCreating selenium_test_runner_docker_chrome_1 ... 
+Creating selenium_test_runner_docker_firefox_1 ... 
+[1A[2K
+Creating selenium_test_runner_docker_firefox_1 ... [32mdone[0m
+[1B[2A[2K
+Creating selenium_test_runner_docker_chrome_1  ... [32mdone[0m
+[2B
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Test)
+[Pipeline] sh
++ docker-compose up search-module book-flight-module
+selenium_test_runner_docker_hub_1 is up-to-date
+selenium_test_runner_docker_chrome_1 is up-to-date
+selenium_test_runner_docker_firefox_1 is up-to-date
+Creating selenium_test_runner_docker_book-flight-module_1 ... 
+Creating selenium_test_runner_docker_search-module_1      ... 
+[2A[2K
+Creating selenium_test_runner_docker_book-flight-module_1 ... [32mdone[0m
+[2B[1A[2K
+Creating selenium_test_runner_docker_search-module_1      ... [32mdone[0m
+[1BAttaching to selenium_test_runner_docker_book-flight-module_1, selenium_test_runner_docker_search-module_1
+[33msearch-module_1       |[0m Put sleep to wait for hub registration to happen
+[36mbook-flight-module_1  |[0m Put sleep to wait for hub registration to happen
+[36mbook-flight-module_1  |[0m Put sleep to wait for hub registration to happen
+[33msearch-module_1       |[0m Nov 22, 2019 7:26:40 AM org.openqa.selenium.remote.DesiredCapabilities chrome
+[33msearch-module_1       |[0m INFO: Using `new ChromeOptions()` is preferred to `DesiredCapabilities.chrome()`
+[36mbook-flight-module_1  |[0m Nov 22, 2019 7:26:40 AM org.openqa.selenium.remote.DesiredCapabilities chrome
+[36mbook-flight-module_1  |[0m INFO: Using `new ChromeOptions()` is preferred to `DesiredCapabilities.chrome()`
+[36mbook-flight-module_1  |[0m Nov 22, 2019 7:26:40 AM org.openqa.selenium.remote.DesiredCapabilities chrome
+[36mbook-flight-module_1  |[0m INFO: Using `new ChromeOptions()` is preferred to `DesiredCapabilities.chrome()`
+[33msearch-module_1       |[0m Nov 22, 2019 7:26:44 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+[33msearch-module_1       |[0m INFO: Detected dialect: OSS
+[33msearch-module_1       |[0m doSearchStarted
+[33msearch-module_1       |[0m keyword entered
+[33msearch-module_1       |[0m doSearchCompleted
+[33msearch-module_1       |[0m GotoVideoStarted
+[33msearch-module_1       |[0m GotoVideoCompleted
+[33msearch-module_1       |[0m 30
+[33msearch-module_1       |[0m Put sleep to wait for hub registration to happen
+[36mbook-flight-module_1  |[0m Nov 22, 2019 7:26:47 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+[36mbook-flight-module_1  |[0m INFO: Detected dialect: OSS
+[36mbook-flight-module_1  |[0m  Flight Confirmation # 2019-11-21232652
+[36mbook-flight-module_1  |[0m $1169 USD
+[36mbook-flight-module_1  |[0m Nov 22, 2019 7:26:54 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+[36mbook-flight-module_1  |[0m INFO: Detected dialect: OSS
+[36mbook-flight-module_1  |[0m  Flight Confirmation # 2019-11-21232700
+[36mbook-flight-module_1  |[0m $1169 USD
+[36mbook-flight-module_1  |[0m 
+[36mbook-flight-module_1  |[0m ===============================================
+[36mbook-flight-module_1  |[0m book-flight-module
+[36mbook-flight-module_1  |[0m Total tests run: 10, Failures: 0, Skips: 0
+[36mbook-flight-module_1  |[0m ===============================================
+[36mbook-flight-module_1  |[0m 
+[36mselenium_test_runner_docker_book-flight-module_1 exited with code 0
+[0m[33msearch-module_1       |[0m Nov 22, 2019 7:27:07 AM org.openqa.selenium.remote.DesiredCapabilities chrome
+[33msearch-module_1       |[0m INFO: Using `new ChromeOptions()` is preferred to `DesiredCapabilities.chrome()`
+[33msearch-module_1       |[0m Nov 22, 2019 7:27:07 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+[33msearch-module_1       |[0m INFO: Detected dialect: OSS
+[33msearch-module_1       |[0m doSearchStarted
+[33msearch-module_1       |[0m keyword entered
+[33msearch-module_1       |[0m doSearchCompleted
+[33msearch-module_1       |[0m GotoVideoStarted
+[33msearch-module_1       |[0m GotoVideoCompleted
+[33msearch-module_1       |[0m 30
+[33msearch-module_1       |[0m 
+[33msearch-module_1       |[0m ===============================================
+[33msearch-module_1       |[0m search-module
+[33msearch-module_1       |[0m Total tests run: 2, Failures: 0, Skips: 0
+[33msearch-module_1       |[0m ===============================================
+[33msearch-module_1       |[0m 
+[33mselenium_test_runner_docker_search-module_1 exited with code 0
+[0m
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] archiveArtifacts
+Archiving artifacts
+[Pipeline] sh
++ docker-compose down
+Stopping selenium_test_runner_docker_chrome_1  ... 
+Stopping selenium_test_runner_docker_firefox_1 ... 
+Stopping selenium_test_runner_docker_hub_1     ... 
+[3A[2K
+Stopping selenium_test_runner_docker_chrome_1  ... [32mdone[0m
+[3B[2A[2K
+Stopping selenium_test_runner_docker_firefox_1 ... [32mdone[0m
+[2B[1A[2K
+Stopping selenium_test_runner_docker_hub_1     ... [32mdone[0m
+[1BRemoving selenium_test_runner_docker_search-module_1      ... 
+Removing selenium_test_runner_docker_book-flight-module_1 ... 
+Removing selenium_test_runner_docker_chrome_1             ... 
+Removing selenium_test_runner_docker_firefox_1            ... 
+Removing selenium_test_runner_docker_hub_1                ... 
+[4A[2K
+Removing selenium_test_runner_docker_book-flight-module_1 ... [32mdone[0m
+[4B[3A[2K
+Removing selenium_test_runner_docker_chrome_1             ... [32mdone[0m
+[3B[5A[2K
+Removing selenium_test_runner_docker_search-module_1      ... [32mdone[0m
+[5B[2A[2K
+Removing selenium_test_runner_docker_firefox_1            ... [32mdone[0m
+[2B[1A[2K
+Removing selenium_test_runner_docker_hub_1                ... [32mdone[0m
+[1BRemoving network selenium_test_runner_docker_default
+[Pipeline] sh
++ sudo rm -rf output/
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
