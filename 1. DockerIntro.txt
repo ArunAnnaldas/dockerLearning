@@ -22,9 +22,6 @@ docker-compose
 docker-compose version
 docker system prun -af ==> Delete containers and images
 
-If docker is not working... 
-Client and server are isntalled
-client contacts servers for informtion. if server is not up. 
 
 ==========================================================================
 Terminologies & its analogous w.r.t Java language (just for understanding)
